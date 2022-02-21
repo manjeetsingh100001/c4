@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>#main{width:800px;margin: auto;}</style>
+  </head>
+
+  <body>
+    <div id="main">
+      
+      <!--No need to add sidebar here, directly display search results here only-->
+
+      <!-- show headline, description and image -->
+    </div>
+  </body>
+</html>
+<script type="module">
+  
+makeApiCall()
+
+async function makeApiCall(){
+  
+  try{
+    let query=localStorage.getItem("search_term")
+    let res=await fetch(`https://shrouded-earth-23381.herokuapp.com/api/search/?q=${query}`);
+   let data=await res.json()
+   console.log(data);
+   let main_div=document.getElementById("main")
+   appendnews(data,main_div)
+  }
+  catch(error){
+console.log("error:",error)
+  }
+}
+function appendnews(data,target){
+    data.forEach( (d)=> {
+    
+    let div = document.createElement("div");
+    div.id="mainDiv"
+    
+  let avatar = document.createElement("img");
+      avatar.src = d.urlToImage;
+      avatar.id="im"
+   let title = document.createElement("h2");
+     title.innerText = d.title ;
+     title.id="tit"
+    // let con= document.createElement("p")
+    // con.innerText = d.content
+    let des = document.createElement("p");
+    des.innerText=d.description
+    des.id="de"
+    div.append(title,des,avatar)
+    target.appendChild(div)
+
+    })
+  }
+
+
+
+</script>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <style>
+      #container{ display:flex;}
+      #sidebar{flex:2;border:1px black solid}
+      #main{flex:8;border:1px black solid}
+     #mainDiv{
+      display:flex;
+     }
+    #im{ flex:4;width:350px;height: 350px; }
+    #tit{flex:3;}
+    #de{flex:3;}
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="sidebar">
+        <!--DO NOT CHANGE THIS ID's-->
+        <!--Append the horizontal navbar(sidebar) here only-->
+      </div>
+
+      <div id="main">
+        <!--DO NOT CHANGE THIS ID's-->
+        <!--Append top headlines from india here only-->
+      </div>
+    </div>
+  </body>
+</html>
+<script type="module">
+  
+  import sidebar from "./components/sidebar.js"
+  let side=document.getElementById("sidebar");
+  side.innerHTML=sidebar();
+  makeApiCall()
+  async function makeApiCall(){
+    try{
+      let res=await fetch("https://shrouded-earth-23381.herokuapp.com/api/headlines/india");
+     let data=await res.json()
+     console.log(data);
+     let main_div=document.getElementById("main")
+     appendnews(data,main_div)
+    }
+    catch(error){
+console.log("error:",error)
+    }
+  }
+
+  function appendnews(data,target){
+    data.forEach( (d)=> {
+    
+    let div = document.createElement("div");
+    div.id="mainDiv"
+    
+  let avatar = document.createElement("img");
+      avatar.src = d.urlToImage;
+      avatar.id="im"
+   let title = document.createElement("h2");
+     title.innerText = d.title ;
+     title.id="tit"
+    // let con= document.createElement("p")
+    // con.innerText = d.content
+    let des = document.createElement("p");
+    des.innerText=d.description
+    des.id="de"
+    div.append(title,des,avatar)
+    target.appendChild(div)
+
+    })
+  document.getElementById("mainDiv").addEventListener("click",detailnews)
+  function detailnews(e){
+    console.log(e.path[1])
+    localStorage.setItem("article",e.path[1])
+    window.location.href="news.html"
+
+   }
+ 
+
+  document.getElementById("inp").addEventListener("keypress",(e)=>{
+    if(e.key=="Enter"){
+        
+        let query=document.getElementById("inp").value;
+        localStorage.setItem("search_term",query)
+        
+        window.location.href="search.html"
+
+    }
+})
+  
+  
+}
+</script>
