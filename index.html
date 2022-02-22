@@ -56,6 +56,10 @@ console.log("error:",error)
     
     let div = document.createElement("div");
     div.id="mainDiv"
+     // document.getElementById("mainDiv").addEventListener("click",detailnews) here this will not work do to reassignment
+     div.addEventListener("click",function(){
+      storenews(d)
+    })
     
   let avatar = document.createElement("img");
       avatar.src = d.urlToImage;
@@ -72,13 +76,19 @@ console.log("error:",error)
     target.appendChild(div)
 
     })
-  document.getElementById("mainDiv").addEventListener("click",detailnews)
-  function detailnews(e){
-    console.log(e.path[1])
-    localStorage.setItem("article",e.path[1])
-    window.location.href="news.html"
+  // document.getElementById("mainDiv").addEventListener("click",detailnews)
+  // function detailnews(e){
+  //   console.log(e.path[1])
+  //   localStorage.setItem("article",e.path[1])
+  //   window.location.href="news.html"
 
-   }
+  //  }
+  function storenews(d){
+      console.log(d);
+      localStorage.setItem("article",JSON.stringify(d))
+     window.location.href="news.html"
+
+    }
  
 
   document.getElementById("inp").addEventListener("keypress",(e)=>{
